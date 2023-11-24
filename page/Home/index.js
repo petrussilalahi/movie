@@ -5,20 +5,20 @@ import {
   Image,
   FlatList,
   StyleSheet,
-  ActivityIndicator,
-  ScrollView, 
   Animated,
+  ActivityIndicator,
 } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
-import { BookNav } from './Details.js';
-import * as Font from 'expo-font';
-import { TextAbstract } from '../utils/handleText.js';
+import { BookNav } from '../Detail';
+import { TextAbstract } from '../../utils/handleText.js';
+import {styles} from './styles.js';
 
 
 export default function HomeScreen({ navigation }) {
   const [data, setData] = useState([]);
   const [indicator, setIndicator] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+  const [page, setPage] = useState(1)
 
   const options = {
     method: 'GET',
@@ -42,14 +42,19 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     setIndicator(true);
     fetch(
-      'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', options
+      `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${page}`, options
     )
       .then((x) => x.json())
       .then((json) => {
-            setIndicator(false);
-        setData(json?.results);
+        setIndicator(false);
+        setData([...data, ...json.results]);
       });
-  }, []);
+  }, [page]);
+
+  const handleLoadMore = () => {
+    setPage(page + 1);
+  }
+
 
   const renderItem = ({ item, idx }) => {
     const image = item.poster_path;
@@ -60,10 +65,12 @@ export default function HomeScreen({ navigation }) {
 
     return (
       <View style={styles.boxView} key={idx}>
-        <Image
+        {
+          indicator ? <ActivityIndicator size="large" color="#0000ff" /> : <Image
           source={{ uri: `https://image.tmdb.org/t/p/original${image}` }}
           style={styles.images}
         />
+        }
         <Text
           style={styles.textTitle}>
           {TextAbstract(title, 20)}
@@ -91,46 +98,10 @@ export default function HomeScreen({ navigation }) {
           <View style={{ marginBottom: 20, margin: 20 , marginTop:5,}} />
         )}
         numColumns={2}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'white',
-  },
-  boxView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'column',
-    margin: 1
-  },
-  text: {
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 0,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  textAdult:{
-    fontSize: 10,
-    color: 'gray',
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  images:{ width: 100, height: 100, borderRadius: 4, objectFit:'contain' },
-  textTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  textRelease:{
-    fontSize: 10,
-    color: 'gray',
-    fontWeight: 'bold',
-    marginBottom: 5,
-  }
-});
+

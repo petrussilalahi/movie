@@ -1,8 +1,8 @@
 import React,{useEffect, useState} from 'react';
 import HomeScreen from '../page/Home';
-import SearchMovie from '../page/SearchMovie';
-import FavMovie from '../page/FavouriteMovie';
-import Book from '../page/Details';
+import SearchMovie from '../page/Search';
+import FavMovie from '../page/Favourite';
+import Detail from '../page/Detail';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionic from 'react-native-vector-icons/Ionicons';
 
@@ -12,8 +12,8 @@ const Tab = createBottomTabNavigator();
 export const Tabs = ({stores}) => {
     const {fav_books} = stores.getState().favReducer;
     useEffect(() => {
-        console.log("fav_books", fav_books);
-    }, [fav_books.length])
+    }
+    , [stores.getState()])
     return (
         <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -72,7 +72,7 @@ export const Tabs = ({stores}) => {
             borderRadius: 7,
           },
         } }  />
-        <Tab.Screen name="Detail Movie" component={Book} options={{ tabBarButton: (props) => null }}/>
+        <Tab.Screen name="Detail Movie" component={Detail} options={{ tabBarButton: (props) => null }}/>
       </Tab.Navigator>
     )
     

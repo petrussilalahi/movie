@@ -1,0 +1,58 @@
+import {StyleSheet} from 'react-native';
+
+export const styles = StyleSheet.create({
+    boxView: {
+      borderOpacity: 3,
+      fontSize: 10,
+      marginTop: 10,
+      borderWidth: 3,
+      padding: 10,
+      borderRadius: 8,
+      borderStyle: 'solid',
+      marginHorizontal: 15,
+    },
+    smallText: {
+      flex: 0.25,
+      paddingTop: 5,
+      paddingBottom: 25,
+      fontSize: 10,
+      color: 'grey',
+      textAlign: 'right',
+    },
+    imageFav:{
+      // position: 'absolute',
+      padding: 10,
+      height: 70,
+      width: 60,
+      top: 10,
+      right: 10,
+      bottom: 0,
+      flex: 1,
+      borderRadius: 20,
+      alignItems: 'stretch',
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignContent: 'center',
+    },
+    textTitle:{
+      flexShrink: 2,
+      width: 260,
+      marginLeft: 5,
+      marginTop: 10,
+      marginBottom: 5,
+      fontSize: 20,
+      fontWeight: '600',
+      color: '#222',
+      fontStyle: 'italic',
+    },
+    textAdults:{
+      opacity: 2,
+      fontSize: 14.5,
+      marginLeft: 10,
+      color: 'blue',
+      marginBottom: 5,
+    },
+    wrapNoFound:{justifyContent:'center', marginVertical: 10, alignItems:'center', flex: 1},
+    wrapTitle: {flexDirection:'row', justifyContent:'center', alignItems:'center'},
+    title: { fontSize: 15 }
+  });

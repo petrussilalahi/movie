@@ -8,16 +8,12 @@ import {
   StyleSheet,
   Button,
   SafeAreaView,
-  TouchableOpacity,
-  TouchableHighlight,
-  Modal,
-  Pressable,
   Animated,
 } from 'react-native';
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { FavBook } from '../redux/actions/index';
+import { FavBook } from '../../redux/actions/index';
 import { connect } from 'react-redux';
+import {styles} from './styles.js';
 
 const BookNav = (navigation, title, author, image, desc, isFav) => (
   <Button
@@ -35,9 +31,7 @@ const BookNav = (navigation, title, author, image, desc, isFav) => (
   />
 );
 
-const Book = ({ route, FavBook, fav_books }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
+const Book = ({ navigation , route, FavBook, fav_books }) => {
   const adult = route.params.adult;
   const title = route.params.title;
   const image = route.params.img;
@@ -87,13 +81,14 @@ const Book = ({ route, FavBook, fav_books }) => {
         <View style={styles.container}>
           <Animated.View style={{ transform: [{ translateX: anim.current }] }}>
             <Button
-              title="Favourite Movie"
-              color="#17315c"
-              type="outline"
-              mode="contained"
-              onPress={()=> {
-              shake();
-              FavBook(title, isFav, image, desc)
+                title="Favourite Movie"
+                color="#17315c"
+                type="outline"
+                mode="contained"
+                onPress={()=> {
+                shake();
+                FavBook(title, isFav, image, desc)
+                navigation.navigate('Favourites Movie')
               }}
             />
           </Animated.View>
@@ -111,82 +106,7 @@ const Book = ({ route, FavBook, fav_books }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  imagebook: {
-    borderRadius: 15,
-    width: 200,
-    height: 300,
-    marginTop: 20,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-  },
-  bookTitle: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    textAlignVertical: 'center',
-    alignContent: 'center',
-    margin: 5,
-  },
-  bookAuthor: {
-    fontSize: 18,
-    margin: 10,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    textAlignVertical: 'center',
-    alignContent: 'center',
-    color: 'blue',
-  },
-  bookDesc: {
-    fontSize: 15,
-    marginLeft: 10,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlignVertical: 'center',
-    alignContent: 'center',
-  },
-  styleBtn: {
-    marginBottom: 0,
-    marginTop: 0,
-    marginLeft: 70,
-    marginRight: 70,
-    flex: 0,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ecf0f1',
-    padding: 8,
-  },
-});
+
 
 const mapDispatchToProps = { FavBook };
 const mapStateToProps = (state) => ({ fav_books: state.favReducer.fav_books });
